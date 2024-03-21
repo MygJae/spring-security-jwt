@@ -17,7 +17,7 @@
 
 ### 시큐리티 작동 방식
 - 요청을 가로채서 보호된 자원에 대한 액세스를 허용하기 전에 보안 검사를 수행
-
+- <img src="img_1.png" width="730"/>
 ### JWT(JSON Web Token) 사용 이유
 - 서버의 확장성이 높으며 대량의 트래픽이 발생해도 대처할 수 있음
 - 특정 DB/서버에 의존하지 않아도 인증할 수 있음
@@ -28,3 +28,9 @@
 - 시그니처 Signature: 헤더, 페이로드가 변조 되었는지를 확인하는 역할
 - 토큰 발급: 많은 사용자의 인증 방식을 저장하고 있지 않기 때문에, 가볍고 확장성이 좋음
 - 세션 발급: 무겁지만, 그만큼 보안성이 좋은 방식
+
+### 참고
+- SecurityConfig.java
+  - WebSecurityConfigurerAdapter 지원 중단(5.7 이상)-> SecurityFilterChain 빈등록으로 해결
+  - authorizeRequests 대체 권고(5.6.1 이상) -> authorizeHttpRequests 
+    - / https://whatistudy.tistory.com/entry/%EC%B6%94%EA%B0%80-AuthorizeRequests-vs-AuthorizeHttpRequests / https://velog.io/@csh0034/Spring-Security-Config-Refactoring /

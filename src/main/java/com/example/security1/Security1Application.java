@@ -10,5 +10,6 @@ public class Security1Application {
 		SpringApplication.run(Security1Application.class, args);
 	}
 
+
 }
 
