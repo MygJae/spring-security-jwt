@@ -2,6 +2,7 @@ package com.example.security1.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -9,6 +10,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true) //secured, prePost 어노테이션 활성화
 public class SecurityConfig {
 
     @Bean
@@ -19,7 +21,7 @@ public class SecurityConfig {
         // 인가(접근권한) 설정
         http.authorizeHttpRequests()
                 .antMatchers("/user/**").authenticated()
-                .antMatchers("/member/**").hasAnyRole("ADMIN", "MEMBER")
+                .antMatchers("/manager/**").hasAnyRole("ADMIN", "MANAGER")
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().permitAll()
                 .and()
