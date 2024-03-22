@@ -23,7 +23,10 @@ public class SecurityConfig {
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().permitAll()
                 .and()
-                .formLogin().loginPage("/loginForm");
+                .formLogin().loginPage("/loginForm")
+                .loginProcessingUrl("/login")
+                .defaultSuccessUrl("/")
+        ;
 
         return http.build();
     }
