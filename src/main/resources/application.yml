@@ -13,6 +13,15 @@ spring:
     properties.hibernate.format_sql: true
     naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id:
+            client-secret:
+            scope: email, profile
+
   devtools:
     livereload:
       enabled: true

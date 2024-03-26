@@ -1,4 +1,4 @@
-package com.example.security1.auth;
+package com.example.security1.config.auth;
 
 import com.example.security1.domain.User;
 import com.example.security1.repository.UserRepository;
@@ -7,8 +7,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 /**
  * /login -> loginProcessingUrl("/login") -> loadUserByUsername 실행
