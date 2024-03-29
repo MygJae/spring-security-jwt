@@ -37,3 +37,7 @@
 - 카카오 로그인
   - client-authentication-method: POST 필요
   - ProviderId 캐스팅 수정 필요
+- 깃 yml 파일 이그노어시 반영 안될때 캐시 삭제 필요
+  - git rm -r --cached 
+  - git add .
+  - git commit -m "-"
