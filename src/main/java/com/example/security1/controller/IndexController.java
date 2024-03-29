@@ -3,6 +3,7 @@ package com.example.security1.controller;
 import com.example.security1.config.auth.PrincipalDetails;
 import com.example.security1.domain.User;
 import com.example.security1.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
+@Slf4j
 public class IndexController {
 
     @Autowired

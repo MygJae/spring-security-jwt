@@ -34,3 +34,6 @@
   - WebSecurityConfigurerAdapter 지원 중단(5.7 이상)-> SecurityFilterChain 빈등록으로 해결
   - authorizeRequests 대체 권고(5.6.1 이상) -> authorizeHttpRequests 
     - / https://whatistudy.tistory.com/entry/%EC%B6%94%EA%B0%80-AuthorizeRequests-vs-AuthorizeHttpRequests / https://velog.io/@csh0034/Spring-Security-Config-Refactoring /
+- 카카오 로그인
+  - client-authentication-method: POST 필요
+  - ProviderId 캐스팅 수정 필요
