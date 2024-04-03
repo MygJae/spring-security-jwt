@@ -1,6 +1,7 @@
 package com.example.security1.config;
 
 import com.example.security1.config.oauth.PrincipalOauth2UserService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -8,23 +9,36 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true) //secured, PreAuthorize 어노테이션 활성화
 @Slf4j
 public class SecurityConfig {
 
     @Autowired
     private PrincipalOauth2UserService principalOauth2UserService;
+    private final CorsConfig corsConfig;
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         // 토큰 사용 방시이므로 csrf 끄기, 사이트 위변조 요청 방지
         http.csrf().disable();
+
+        // Clickjacking 공격으로부터 보호하기 위함
+        http.headers().frameOptions().sameOrigin();
+
+        // 세션
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .addFilter(corsConfig.corsFilter());
 
         // 인가(접근권한) 설정
         http.authorizeHttpRequests()

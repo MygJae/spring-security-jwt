@@ -8,11 +8,13 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.sql.Timestamp;
 
 @Entity
 @Data
 @NoArgsConstructor
+@Table(name = "USERS")
 public class User {
     @Id
     @GeneratedValue
