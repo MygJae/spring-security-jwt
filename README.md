@@ -17,7 +17,7 @@
 
 ### 시큐리티 작동 방식
 - 요청을 가로채서 보호된 자원에 대한 액세스를 허용하기 전에 보안 검사를 수행
-- <img src="img_1.png" width="730"/>
+- <img src="img/img_1.png" width="730"/>
 ### JWT(JSON Web Token) 사용 이유
 - 서버의 확장성이 높으며 대량의 트래픽이 발생해도 대처할 수 있음
 - 특정 DB/서버에 의존하지 않아도 인증할 수 있음
@@ -41,3 +41,19 @@
   - git rm -r --cached 
   - git add .
   - git commit -m "-"
+- Refresh Token 인증 과정
+- <img src="img/img.jpg" width="730"/>
+- - (1) 사용자가 ID , PW를 통해 로그인
+  - (2) 서버에서는 회원 DB에서 값을 비교
+  - (3-4) 로그인이 완료되면 Access Token, Refresh Token을 발급. 이때 회원DB에도 Refresh Token을 저장 
+  - (5) 사용자는 Refresh Token은 안전한 저장소에 저장 후, Access Token을 헤더에 실어 요청
+  - (6-7) Access Token을 검증하여 이에 맞는 데이터를 보냄
+  - (8) 시간이 지나 Access Token이 만료되면,
+  - (9) 사용자는 이전과 동일하게 Access Token을 헤더에 실어 요청을 보냄
+  - (10-11) 서버는 Access Token이 만료됨을 확인하고 권한없음을 신호로 보냄
+  - (12) 사용자는 Refresh Token과 Access Token을 함께 서버로 보냄
+  - (13) 서버는 받은 Access Token이 조작되지 않았는지 확인한 후, Refresh Token과 사용자의 DB에 저장되어 있던 Refresh Token을 비교. Token이 동일하고 유효기간도 지나지 않았다면 새로운 Access Token을 발급 
+  - (14) 서버는 새로운 Access Token을 헤더에 실어 다시 API 요청 응답을 진행
+- Tip
+  - Access Token 만료가 될 때마다 계속 과정 9~11을 거칠 필요는 없다. 사용자(프론트엔드)에서 Access Token의 Payload를 통해 유효기간을 알 수 있다. 따라서 프론트엔드 단에서 API 요청 전에 토큰이 만료됐다면 곧바로 재발급 요청을 할 수도 있다.
+- https://tansfil.tistory.com/59
