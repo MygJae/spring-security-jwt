@@ -1,6 +1,7 @@
 package com.example.security1.config;
 
 import com.example.security1.config.oauth.PrincipalOauth2UserService;
+import com.example.security1.filter.MyFilter3;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +11,9 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.filter.CorsFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -28,6 +29,8 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.addFilterBefore(new MyFilter3(), SecurityContextPersistenceFilter.class);
+//        UsernamePasswordAuthenticationFilter  BasicAuthenticationFilter
 
         // 토큰 사용 방시이므로 csrf 끄기, 사이트 위변조 요청 방지
         http.csrf().disable();
@@ -38,7 +41,8 @@ public class SecurityConfig {
         // 세션
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilter(corsConfig.corsFilter());
+                .addFilter(corsConfig.corsFilter())
+                .httpBasic().disable();
 
         // 인가(접근권한) 설정
         http.authorizeHttpRequests()
