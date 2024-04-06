@@ -1,5 +1,6 @@
 package com.example.security1.config;
 
+import com.example.security1.config.jwt.JwtAuthenticationFilter;
 import com.example.security1.config.oauth.PrincipalOauth2UserService;
 import com.example.security1.filter.MyFilter3;
 import lombok.RequiredArgsConstructor;
@@ -7,10 +8,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
@@ -24,12 +28,17 @@ public class SecurityConfig {
 
     @Autowired
     private PrincipalOauth2UserService principalOauth2UserService;
-    private final CorsConfig corsConfig;
+
+    @Autowired
+    private CorsConfig corsConfig;
+
 
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.addFilterBefore(new MyFilter3(), SecurityContextPersistenceFilter.class);
+        AuthenticationManager authenticationManager =  http.getSharedObject(AuthenticationManager.class);
+
+//        http.addFilterBefore(new MyFilter3(), SecurityContextPersistenceFilter.class);
 //        UsernamePasswordAuthenticationFilter  BasicAuthenticationFilter
 
         // 토큰 사용 방시이므로 csrf 끄기, 사이트 위변조 요청 방지
@@ -38,11 +47,13 @@ public class SecurityConfig {
         // Clickjacking 공격으로부터 보호하기 위함
         http.headers().frameOptions().sameOrigin();
 
-        // 세션
+        // 세션 설정
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilter(corsConfig.corsFilter())
                 .httpBasic().disable();
+
+        http.addFilter(new JwtAuthenticationFilter(authenticationManager));
 
         // 인가(접근권한) 설정
         http.authorizeHttpRequests()
