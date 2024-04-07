@@ -74,11 +74,11 @@ public class IndexController {
 
     @PostMapping("/join")
     public String join(User user) {
-        System.out.println(user);
         user.setRole("ROLE_USER");
         String rawPwd = user.getPassword();
         String encPwd = bCryptPasswordEncoder.encode(rawPwd);
         user.setPassword(encPwd);
+        System.out.println(user);
         userRepository.save(user);
         return "redirect:/loginForm";
     }

@@ -1,8 +1,10 @@
 package com.example.security1.config;
 
 import com.example.security1.config.jwt.JwtAuthenticationFilter;
+import com.example.security1.config.jwt.JwtAuthorizationFilter;
 import com.example.security1.config.oauth.PrincipalOauth2UserService;
 import com.example.security1.filter.MyFilter3;
+import com.example.security1.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,13 +34,15 @@ public class SecurityConfig {
     @Autowired
     private CorsConfig corsConfig;
 
+    private final UserRepository userRepository;
+
 
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         AuthenticationManager authenticationManager =  http.getSharedObject(AuthenticationManager.class);
 
-//        http.addFilterBefore(new MyFilter3(), SecurityContextPersistenceFilter.class);
+        http.addFilterBefore(new MyFilter3(), SecurityContextPersistenceFilter.class);
 //        UsernamePasswordAuthenticationFilter  BasicAuthenticationFilter
 
         // 토큰 사용 방시이므로 csrf 끄기, 사이트 위변조 요청 방지
@@ -54,6 +58,7 @@ public class SecurityConfig {
                 .httpBasic().disable();
 
         http.addFilter(new JwtAuthenticationFilter(authenticationManager));
+        http.addFilter(new JwtAuthorizationFilter(authenticationManager, userRepository));
 
         // 인가(접근권한) 설정
         http.authorizeHttpRequests()

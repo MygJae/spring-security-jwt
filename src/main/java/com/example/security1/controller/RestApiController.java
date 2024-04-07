@@ -16,5 +16,22 @@ public class RestApiController {
     public String token() {
         return "<h1>token</h1>";
     }
+
+    @GetMapping("/api/v1/user")
+    public String userV1() {
+        return "user";
+    }
+
+    @GetMapping("/api/v1/manager")
+    public String managerV1() {
+        return "manager";
+    }
+
+    @GetMapping("/api/v1/admin")
+    public String adminV1() {
+        return "admin";
+    }
+
+
 }
 

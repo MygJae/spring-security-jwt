@@ -10,6 +10,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Entity
 @Data
@@ -29,6 +32,15 @@ public class User {
 
     private String providerId;
     private String provider;
+
+
+    // ENUM으로 안하고 ,로 해서 구분해서 ROLE을 입력 -> 그걸 파싱!!
+    public List<String> getRoleList() {
+        if (this.role.length() > 0) {
+            return Arrays.asList(this.role.split(","));
+        }
+        return new ArrayList<>();
+    }
 
     @Builder
     public User(String username, String password, String email, String role, Timestamp createDate, String providerId, String provider) {
